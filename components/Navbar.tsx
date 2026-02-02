@@ -3,59 +3,48 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { 
-  Image as ImageIcon, 
-  Layout, 
-  ListOrdered, 
-  LayoutGrid, 
-  ArrowLeftRight,
-  Home
-} from "lucide-react";
 
 const navItems = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Image Upload", href: "/image-upload", icon: ImageIcon },
-  { name: "Kanban Board", href: "/kanban-board", icon: Layout },
-  { name: "List Sorting", href: "/list-sorting", icon: ListOrdered },
-  { name: "Gallery", href: "/gallery", icon: LayoutGrid },
-  { name: "Transfer List", href: "/transfer-list", icon: ArrowLeftRight },
-  { name: "Tier List", href: "/tier-list", icon: Layout },
+  { name: "Overview", href: "/" },
+  { name: "Upload", href: "/image-upload" },
+  { name: "Kanban", href: "/kanban-board" },
+  { name: "Sorting", href: "/list-sorting" },
+  { name: "Gallery", href: "/gallery" },
+  { name: "Transfer", href: "/transfer-list" },
+  { name: "Tier List", href: "/tier-list" },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-white/50 dark:bg-black/50 backdrop-blur-xl supports-[backdrop-filter]:bg-white/50">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-foreground text-background rounded-lg flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+    <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80">
+      <div className="container mx-auto px-6">
+        <div className="flex h-20 items-center justify-between">
+          <Link href="/" className="group flex items-center gap-3">
+            <div className="w-10 h-10 bg-primary text-primary-foreground flex items-center justify-center text-xl font-serif italic border border-transparent group-hover:bg-transparent group-hover:text-primary group-hover:border-primary transition-all duration-300">
               D
             </div>
-            <span className="text-lg font-bold tracking-tight text-foreground/90">DnD Demo</span>
+            <span className="text-xl font-serif font-bold tracking-tight text-foreground">
+              The Collection
+            </span>
           </Link>
           
-          <div className="hidden md:flex items-center gap-1 bg-secondary/50 p-1 rounded-xl backdrop-blur-sm">
+          <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  "relative text-xs font-sans uppercase tracking-widest transition-colors py-2",
                   pathname === item.href
-                    ? "bg-background text-foreground shadow-sm scale-105"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+                    ? "text-primary font-bold after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary"
+                    : "text-muted-foreground hover:text-foreground hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-[1px] hover:after:bg-border"
                 )}
               >
-                <item.icon className="h-4 w-4" />
-                <span className="hidden lg:inline">{item.name}</span>
+                {item.name}
               </Link>
             ))}
-          </div>
-          
-          <div className="md:hidden">
-            {/* Mobile menu trigger could go here */}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Upload, FileImage, Trash2, RefreshCcw, X } from "lucide-react";
+import { Upload, Trash2, RefreshCcw, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -124,26 +124,28 @@ export function ImageUpload() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="w-full max-w-5xl mx-auto space-y-12">
+      <header className="flex items-end justify-between border-b border-border pb-6">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight">Upload Images</h2>
-          <p className="text-sm text-muted-foreground">Drag and drop images up to 2MB each</p>
+          <h2 className="text-4xl font-serif font-bold text-primary mb-2">Asset Upload</h2>
+          <p className="text-sm font-sans uppercase tracking-widest text-muted-foreground">
+            Dropzone / Validation / Preview
+          </p>
         </div>
         <button
           onClick={resetImages}
-          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-secondary"
+          className="editorial-button flex items-center gap-2"
         >
-          <RefreshCcw className="w-4 h-4" />
-          Reset
+          <RefreshCcw className="w-3 h-3" />
+          Reset System
         </button>
-      </div>
+      </header>
 
       {error && (
-        <div className="flex items-center gap-3 p-4 bg-destructive/10 border border-destructive/20 text-destructive rounded-xl text-sm animate-in fade-in slide-in-from-top-2">
-          <div className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
+        <div className="flex items-center gap-4 p-4 border border-destructive bg-destructive/5 text-destructive font-mono text-xs uppercase tracking-wide">
+          <div className="w-2 h-2 bg-destructive" />
           {error}
-          <button onClick={() => setError(null)} className="ml-auto hover:text-destructive/80">
+          <button onClick={() => setError(null)} className="ml-auto hover:text-foreground">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -155,24 +157,21 @@ export function ImageUpload() {
         onDrop={onDrop}
         onClick={handleContainerClick}
         className={cn(
-          "relative border-2 border-dashed rounded-3xl p-16 transition-all duration-300 flex flex-col items-center justify-center text-center gap-6 cursor-pointer group glass",
+          "relative border-2 border-dashed p-24 transition-all duration-500 flex flex-col items-center justify-center text-center gap-8 cursor-pointer group bg-secondary/30",
           isDragging
-            ? "border-primary bg-primary/5 scale-[1.01] shadow-2xl"
-            : "border-border hover:border-primary/50 hover:bg-secondary/30"
+            ? "border-primary bg-primary/5 scale-[1.01]"
+            : "border-border hover:border-primary hover:bg-secondary/50"
         )}
       >
-        <div className={cn(
-          "w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-sm",
-          isDragging ? "bg-primary text-primary-foreground scale-110" : "bg-secondary text-muted-foreground group-hover:scale-110 group-hover:bg-background"
-        )}>
-          <Upload className="w-10 h-10" />
+        <div className="w-24 h-24 border border-border bg-background flex items-center justify-center group-hover:rotate-3 transition-transform duration-500 shadow-sm">
+          <Upload className="w-8 h-8 text-muted-foreground group-hover:text-primary transition-colors" />
         </div>
-        <div className="space-y-2">
-          <p className="text-xl font-medium text-foreground">
-            {isDragging ? "Drop images now" : "Click or drag images to upload"}
+        <div className="space-y-3">
+          <p className="text-2xl font-serif italic text-foreground">
+            {isDragging ? "Release to Upload" : "Drag assets here"}
           </p>
-          <p className="text-sm text-muted-foreground">
-            Supports JPG, PNG, WebP up to 2MB
+          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            JPG — PNG — WEBP — Max 2MB
           </p>
         </div>
         <input
@@ -188,37 +187,42 @@ export function ImageUpload() {
         />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         <AnimatePresence initial={false}>
           {images.map((image) => (
             <motion.div
               key={image.id}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               layout
-              className="group relative aspect-square rounded-2xl overflow-hidden bg-secondary border border-border shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+              className="group relative aspect-[3/4] bg-secondary border border-border p-2 hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_var(--color-border)]"
             >
-              <Image
-                src={image.url}
-                alt={image.name}
-                fill
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end p-4 text-center">
-                <p className="text-white text-xs font-medium truncate w-full mb-1">
-                  {image.name}
-                </p>
-                <p className="text-white/70 text-[10px] mb-3">
-                  {formatSize(image.size)}
-                </p>
+              <div className="relative w-full h-full bg-white overflow-hidden border border-border/50">
+                <Image
+                  src={image.url}
+                  alt={image.name}
+                  fill
+                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700"
+                  unoptimized
+                />
+              </div>
+              
+              <div className="absolute inset-x-0 bottom-0 p-4 bg-background border-t border-border translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-between">
+                <div className="overflow-hidden">
+                  <p className="font-mono text-xs truncate max-w-[100px] text-foreground">
+                    {image.name}
+                  </p>
+                  <p className="font-mono text-[10px] text-muted-foreground">
+                    {formatSize(image.size)}
+                  </p>
+                </div>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     removeImage(image.id);
                   }}
-                  className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-destructive hover:border-destructive transition-colors"
+                  className="text-destructive hover:bg-destructive hover:text-white p-2 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -229,9 +233,12 @@ export function ImageUpload() {
       </div>
 
       {images.length === 0 && !error && (
-        <div className="text-center py-16 rounded-3xl border border-dashed border-border bg-secondary/20">
-          <FileImage className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
-          <p className="text-muted-foreground font-medium">No images uploaded yet</p>
+        <div className="flex items-center justify-center py-24 border border-border bg-secondary/10">
+          <div className="text-center space-y-4">
+            <div className="w-12 h-1px bg-border mx-auto" />
+            <p className="font-serif italic text-muted-foreground">No artifacts selected.</p>
+            <div className="w-12 h-1px bg-border mx-auto" />
+          </div>
         </div>
       )}
     </div>

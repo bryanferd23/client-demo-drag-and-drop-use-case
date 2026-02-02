@@ -20,7 +20,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, RefreshCcw, CheckCircle2, Circle } from "lucide-react";
+import { GripVertical, RefreshCcw, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ListItem {

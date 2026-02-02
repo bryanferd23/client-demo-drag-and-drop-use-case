@@ -8,6 +8,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-playfair);
   
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -34,55 +35,55 @@
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0rem; /* Sharp, editorial look */
   
-  /* Light Mode - Refined Swiss Style */
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
+  /* Luxury Editorial - Light Mode */
+  --background: 40 20% 97%; /* #F7F5F0 Warm Paper */
+  --foreground: 0 0% 10%;   /* #1A1A1A Ink Black */
   
-  --primary: 240 5.9% 10%;
-  --primary-foreground: 0 0% 98%;
+  --primary: 140 30% 25%;   /* #2D532D Deep Forest */
+  --primary-foreground: 40 20% 97%;
   
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
+  --secondary: 40 15% 92%;  /* #EBE8E1 Darker Paper */
+  --secondary-foreground: 0 0% 10%;
   
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
+  --muted: 40 10% 88%;      /* #E3E0D9 Muted Paper */
+  --muted-foreground: 0 0% 40%;
   
-  --accent: 240 4.8% 95.9%;
-  --accent-foreground: 240 5.9% 10%;
+  --accent: 15 30% 45%;     /* #95503C Terracotta */
+  --accent-foreground: 40 20% 97%;
   
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive: 0 60% 40%; /* #A32929 Deep Red */
+  --destructive-foreground: 40 20% 97%;
   
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 240 5% 64.9%;
+  --border: 0 0% 10%;       /* Solid Black Border */
+  --input: 0 0% 10%;
+  --ring: 140 30% 25%;
 }
 
 .dark {
-  /* Dark Mode - Deep & Tech */
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
+  /* Luxury Editorial - Dark Mode */
+  --background: 0 0% 8%;    /* #141414 Charcoal */
+  --foreground: 40 20% 94%; /* #F2EFE9 Off White */
   
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
+  --primary: 140 20% 40%;   /* #527A52 Muted Forest */
+  --primary-foreground: 0 0% 10%;
   
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
+  --secondary: 0 0% 12%;    /* #1F1F1F Deep Gray */
+  --secondary-foreground: 40 20% 94%;
   
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
+  --muted: 0 0% 16%;
+  --muted-foreground: 0 0% 60%;
   
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
+  --accent: 15 20% 55%;     /* #A86A59 Muted Terra */
+  --accent-foreground: 0 0% 10%;
   
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive: 0 50% 50%;
+  --destructive-foreground: 40 20% 94%;
   
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 240 4.9% 83.9%;
+  --border: 0 0% 30%;       /* Soft Gray Border */
+  --input: 0 0% 30%;
+  --ring: 140 20% 40%;
 }
 
 @layer base {
@@ -90,17 +91,24 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/10 selection:text-primary;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    @apply bg-background text-foreground antialiased;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/70 dark:bg-black/70 backdrop-blur-lg border border-white/20 dark:border-white/10 shadow-sm;
+  .editorial-card {
+    @apply bg-background border border-border transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[4px_4px_0px_0px_var(--color-border)];
   }
   
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary/20 dark:hover:border-primary/30;
+  .editorial-button {
+    @apply bg-primary text-primary-foreground font-medium px-6 py-3 border border-transparent hover:bg-primary/90 transition-colors rounded-none uppercase tracking-wide text-xs;
+  }
+
+  .editorial-input {
+    @apply bg-transparent border-b-2 border-border px-0 py-2 focus:border-primary outline-none rounded-none transition-colors;
   }
 }

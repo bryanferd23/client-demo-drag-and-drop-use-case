@@ -1,111 +1,101 @@
 import Link from "next/link";
-import { 
-  Image as ImageIcon, 
-  Layout, 
-  ListOrdered, 
-  LayoutGrid, 
-  ArrowLeftRight,
-  ArrowRight
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const demos = [
   {
-    title: "Image Upload",
-    description: "Upload images by dragging and dropping them into a dropzone. Preview and manage your uploads.",
+    id: "01",
+    title: "The Upload",
+    description: "A refined dropzone interface for digital assets. Experience seamless file management with visual feedback.",
     href: "/image-upload",
-    icon: ImageIcon,
-    color: "bg-blue-500",
-    gradient: "from-blue-500/20 to-blue-500/0",
+    tag: "Utility",
   },
   {
-    title: "Kanban Board",
-    description: "Manage tasks across multiple columns. Drag cards between 'To Do', 'Doing', and 'Done'.",
+    id: "02",
+    title: "Kanban System",
+    description: "Orchestrate workflows with a tactile board experience. Move tasks through lifecycle stages with precision.",
     href: "/kanban-board",
-    icon: Layout,
-    color: "bg-purple-500",
-    gradient: "from-purple-500/20 to-purple-500/0",
+    tag: "Productivity",
   },
   {
-    title: "List Sorting",
-    description: "Reorder a simple list of items with smooth animations and drag handles.",
+    id: "03",
+    title: "Sequence Sort",
+    description: "Prioritize and arrange content with intuitive list reordering. Smooth transitions meet strict logic.",
     href: "/list-sorting",
-    icon: ListOrdered,
-    color: "bg-emerald-500",
-    gradient: "from-emerald-500/20 to-emerald-500/0",
+    tag: "Organization",
   },
   {
-    title: "Arrangeable Gallery",
-    description: "A responsive grid gallery where you can reorder images effortlessly.",
+    id: "04",
+    title: "Visual Gallery",
+    description: "Curate visual narratives in a responsive grid. A drag-and-drop experience designed for creatives.",
     href: "/gallery",
-    icon: LayoutGrid,
-    color: "bg-orange-500",
-    gradient: "from-orange-500/20 to-orange-500/0",
+    tag: "Media",
   },
   {
-    title: "Transfer List",
-    description: "Move items between two lists. Perfect for selecting items from a larger set.",
+    id: "05",
+    title: "Dual Transfer",
+    description: "Efficiently move items between datasets. The definitive pattern for selection and configuration.",
     href: "/transfer-list",
-    icon: ArrowLeftRight,
-    color: "bg-rose-500",
-    gradient: "from-rose-500/20 to-rose-500/0",
+    tag: "Data",
   },
   {
-    title: "Tier List Maker",
-    description: "Rank items into S, A, B, C, D tiers. Drag and drop to sort your favorites.",
+    id: "06",
+    title: "Tier Ranking",
+    description: "Categorize and rank items into distinct tiers. A structured approach to qualitative assessment.",
     href: "/tier-list",
-    icon: Layout,
-    color: "bg-indigo-500",
-    gradient: "from-indigo-500/20 to-indigo-500/0",
+    tag: "Analysis",
   },
 ];
 
 export default function Home() {
   return (
-    <div className="container mx-auto px-4 py-24">
-      <div className="max-w-3xl mb-24 mx-auto text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary text-secondary-foreground text-xs font-medium border border-border">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-          </span>
-          Next.js 15 + dnd-kit
+    <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-white">
+      <header className="container mx-auto px-6 py-24 md:py-32 border-b border-border">
+        <div className="max-w-4xl">
+          <p className="text-sm font-sans uppercase tracking-widest text-muted-foreground mb-6">
+            Interactive Experiments
+          </p>
+          <h1 className="text-6xl md:text-8xl font-serif font-bold tracking-tight leading-[0.9] mb-8 text-primary">
+            Digital <br /> Tactility.
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground font-serif italic max-w-2xl leading-relaxed">
+            A curated collection of drag-and-drop patterns, reimagined for the modern web. 
+            Exploring the intersection of utility and aesthetics.
+          </p>
         </div>
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground">
-          Interaction <span className="text-muted-foreground">Design</span>
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          A showcase of various interactive drag-and-drop patterns. Explore different use cases from simple sorting to 
-          complex board layouts.
-        </p>
-      </div>
+      </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {demos.map((demo) => (
-          <Link 
-            key={demo.href} 
-            href={demo.href}
-            className="group relative flex flex-col p-8 rounded-3xl border bg-card text-card-foreground transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
-          >
-            <div className={`absolute inset-0 bg-gradient-to-br ${demo.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-            
-            <div className={`relative w-12 h-12 rounded-2xl ${demo.color} flex items-center justify-center text-white mb-6 shadow-lg shadow-current/20 group-hover:scale-110 transition-transform duration-300`}>
-              <demo.icon className="w-6 h-6" />
-            </div>
-            
-            <h2 className="relative text-2xl font-bold mb-3 tracking-tight">
-              {demo.title}
-            </h2>
-            
-            <p className="relative text-muted-foreground mb-8 flex-grow leading-relaxed">
-              {demo.description}
-            </p>
-            
-            <div className="relative flex items-center gap-2 text-primary font-semibold group-hover:translate-x-1 transition-transform">
-              Try Demo <ArrowRight className="w-4 h-4" />
-            </div>
-          </Link>
-        ))}
-      </div>
+      <section className="container mx-auto px-6 py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+          {demos.map((demo) => (
+            <Link 
+              key={demo.href} 
+              href={demo.href}
+              className="group flex flex-col gap-6"
+            >
+              <div className="aspect-[4/3] bg-secondary border border-border p-8 flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-500 relative overflow-hidden">
+                <div className="absolute top-4 left-4 font-mono text-xs text-muted-foreground">
+                  {demo.id}
+                </div>
+                <div className="absolute bottom-4 right-4 font-mono text-xs uppercase tracking-widest text-muted-foreground border border-border px-2 py-1">
+                  {demo.tag}
+                </div>
+                <div className="w-16 h-16 bg-background border border-border flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm">
+                  <ArrowRight className="w-6 h-6 text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <h2 className="text-3xl font-serif font-bold group-hover:text-primary transition-colors">
+                  {demo.title}
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  {demo.description}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
