@@ -19,6 +19,7 @@ const navItems = [
   { name: "List Sorting", href: "/list-sorting", icon: ListOrdered },
   { name: "Gallery", href: "/gallery", icon: LayoutGrid },
   { name: "Transfer List", href: "/transfer-list", icon: ArrowLeftRight },
+  { name: "Tier List", href: "/tier-list", icon: Layout },
 ];
 
 export function Navbar() {

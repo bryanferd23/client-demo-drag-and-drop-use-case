@@ -44,6 +44,13 @@ const demos = [
     icon: ArrowLeftRight,
     color: "bg-rose-500",
   },
+  {
+    title: "Tier List Maker",
+    description: "Rank items into S, A, B, C, D tiers. Drag and drop to sort your favorites.",
+    href: "/tier-list",
+    icon: Layout,
+    color: "bg-indigo-500",
+  },
 ];
 
 export default function Home() {
