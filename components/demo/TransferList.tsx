@@ -12,6 +12,7 @@ import {
   DragStartEvent,
   DragOverEvent,
   DragEndEvent,
+  useDroppable,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -98,6 +99,15 @@ function SortableItem({ item, container }: { item: Item; container: string }) {
   );
 }
 
+function DroppableList({ id, children, className }: { id: string; children: React.ReactNode; className?: string }) {
+  const { setNodeRef } = useDroppable({ id });
+  return (
+    <div ref={setNodeRef} className={cn("min-h-full w-full", className)}>
+      {children}
+    </div>
+  );
+}
+
 export function TransferList() {
   const [data, setData] = useState<TransferData>(SEED_DATA);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -148,7 +158,7 @@ export function TransferList() {
     if (!overId || active.id === overId) return;
 
     const activeContainer = findContainer(active.id as string);
-    const overContainer = findContainer(overId as string);
+    const overContainer = overId in data ? overId as keyof TransferData : findContainer(overId as string);
 
     if (!activeContainer || !overContainer || activeContainer === overContainer) return;
 
@@ -164,7 +174,9 @@ export function TransferList() {
       const [movedItem] = newActiveItems.splice(activeIndex, 1);
 
       const newOverItems = [...overItems];
-      newOverItems.splice(overIndex >= 0 ? overIndex : newOverItems.length, 0, movedItem);
+      // If over an empty container (overId is the container ID), overIndex will be -1
+      const insertIndex = overIndex >= 0 ? overIndex : newOverItems.length;
+      newOverItems.splice(insertIndex, 0, movedItem);
 
       return {
         ...prev,
@@ -177,13 +189,13 @@ export function TransferList() {
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     const activeContainer = findContainer(active.id as string);
-    const overContainer = findContainer(over?.id as string);
+    const overContainer = over?.id in data ? over?.id as keyof TransferData : findContainer(over?.id as string);
 
     if (activeContainer && overContainer && activeContainer === overContainer) {
       const activeIndex = data[activeContainer].findIndex((i) => i.id === active.id);
       const overIndex = data[overContainer].findIndex((i) => i.id === over?.id);
 
-      if (activeIndex !== overIndex) {
+      if (activeIndex !== overIndex && overIndex >= 0) {
         setData((prev) => {
           if (!prev) return prev;
           return {
@@ -234,64 +246,68 @@ export function TransferList() {
           {/* Available List */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Available</h3>
-              <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full border border-border">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Available</h3>
+              <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full border border-border font-mono">
                 {data.available.length}
               </span>
             </div>
-            <div className="bg-secondary/30 backdrop-blur-sm rounded-2xl p-4 border border-border min-h-[400px]">
-              <div className="relative mb-4">
+            <div className="bg-secondary/30 backdrop-blur-sm p-4 border border-border min-h-[450px] flex flex-col relative overflow-hidden">
+              <div className="relative mb-4 z-10">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input 
                   type="text" 
                   placeholder="Search available..."
-                  className="w-full bg-background border border-border rounded-xl py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground/50 transition-all"
+                  className="w-full bg-background border border-border py-2 pl-9 pr-4 text-sm focus:border-primary/50 outline-none placeholder:text-muted-foreground/50 transition-all font-mono"
                 />
               </div>
-              <SortableContext
-                id="available"
-                items={data.available.map((i) => i.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                <div className="flex flex-col gap-2">
+              <DroppableList id="available" className="flex-grow flex flex-col gap-2 relative z-0">
+                <SortableContext
+                  id="available"
+                  items={data.available.map((i) => i.id)}
+                  strategy={verticalListSortingStrategy}
+                >
                   {data.available.map((item) => (
                     <SortableItem key={item.id} item={item} container="available" />
                   ))}
                   {data.available.length === 0 && (
-                    <div className="py-12 text-center text-muted-foreground text-sm italic">
-                      All items selected
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-12 text-center">
+                      <p className="text-muted-foreground/40 text-sm font-serif italic italic">
+                        All items selected
+                      </p>
                     </div>
                   )}
-                </div>
-              </SortableContext>
+                </SortableContext>
+              </DroppableList>
             </div>
           </div>
 
           {/* Selected List */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Selected</h3>
-              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Selected</h3>
+              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20 font-mono">
                 {data.selected.length}
               </span>
             </div>
-            <div className="bg-secondary/30 backdrop-blur-sm rounded-2xl p-4 border border-border min-h-[400px]">
-              <SortableContext
-                id="selected"
-                items={data.selected.map((i) => i.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                <div className="flex flex-col gap-2">
+            <div className="bg-secondary/30 backdrop-blur-sm p-4 border border-border min-h-[450px] flex flex-col relative overflow-hidden">
+              <DroppableList id="selected" className="flex-grow flex flex-col gap-2 relative z-0">
+                <SortableContext
+                  id="selected"
+                  items={data.selected.map((i) => i.id)}
+                  strategy={verticalListSortingStrategy}
+                >
                   {data.selected.map((item) => (
                     <SortableItem key={item.id} item={item} container="selected" />
                   ))}
                   {data.selected.length === 0 && (
-                    <div className="py-12 text-center text-muted-foreground text-sm italic">
-                      No items selected yet
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-12 text-center">
+                      <p className="text-muted-foreground/40 text-sm font-serif italic italic">
+                        No items selected yet
+                      </p>
                     </div>
                   )}
-                </div>
-              </SortableContext>
+                </SortableContext>
+              </DroppableList>
             </div>
           </div>
         </div>
