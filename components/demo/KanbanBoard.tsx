@@ -21,7 +21,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Plus, MoreHorizontal, RefreshCcw } from "lucide-react";
+import { Plus, MoreHorizontal, RefreshCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Types
@@ -93,19 +93,14 @@ function SortableTask({ id, task }: { id: string; task: Task }) {
     <div
       ref={setNodeRef}
       style={style}
+      {...attributes}
+      {...listeners}
       className={cn(
-        "group relative bg-white dark:bg-zinc-800 p-4 rounded-xl border shadow-sm transition-all hover:border-zinc-300 dark:hover:border-zinc-700",
+        "group relative bg-white dark:bg-zinc-800 p-4 rounded-xl border shadow-sm transition-all hover:border-zinc-300 dark:hover:border-zinc-700 cursor-grab active:cursor-grabbing",
         isDragging && "opacity-50 grayscale"
       )}
     >
       <div className="flex items-start gap-3">
-        <div 
-          {...attributes} 
-          {...listeners}
-          className="mt-1 cursor-grab active:cursor-grabbing text-zinc-400 hover:text-zinc-600 transition-colors"
-        >
-          <GripVertical className="w-4 h-4" />
-        </div>
         <p className="text-sm text-zinc-700 dark:text-zinc-300 flex-grow">
           {task.content}
         </p>
@@ -324,9 +319,6 @@ export function KanbanBoard() {
           {activeTaskId ? (
             <div className="bg-white dark:bg-zinc-800 p-4 rounded-xl border shadow-xl w-[280px] rotate-2 cursor-grabbing">
               <div className="flex items-start gap-3">
-                <div className="mt-1 text-zinc-400">
-                  <GripVertical className="w-4 h-4" />
-                </div>
                 <p className="text-sm text-zinc-700 dark:text-zinc-300">
                   {board.tasks[activeTaskId].content}
                 </p>
