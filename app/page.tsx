@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 const demos = [
@@ -8,6 +9,7 @@ const demos = [
     description: "A refined dropzone interface for digital assets. Experience seamless file management with visual feedback.",
     href: "/image-upload",
     tag: "Utility",
+    image: "/screenshots/image-upload.png",
   },
   {
     id: "02",
@@ -15,6 +17,7 @@ const demos = [
     description: "Orchestrate workflows with a tactile board experience. Move tasks through lifecycle stages with precision.",
     href: "/kanban-board",
     tag: "Productivity",
+    image: "/screenshots/kanban-board.png",
   },
   {
     id: "03",
@@ -22,6 +25,7 @@ const demos = [
     description: "Prioritize and arrange content with intuitive list reordering. Smooth transitions meet strict logic.",
     href: "/list-sorting",
     tag: "Organization",
+    image: "/screenshots/list-sorting.png",
   },
   {
     id: "04",
@@ -29,6 +33,7 @@ const demos = [
     description: "Curate visual narratives in a responsive grid. A drag-and-drop experience designed for creatives.",
     href: "/gallery",
     tag: "Media",
+    image: "/screenshots/gallery.png",
   },
   {
     id: "05",
@@ -36,6 +41,7 @@ const demos = [
     description: "Efficiently move items between datasets. The definitive pattern for selection and configuration.",
     href: "/transfer-list",
     tag: "Data",
+    image: "/screenshots/transfer-list.png",
   },
   {
     id: "06",
@@ -43,6 +49,7 @@ const demos = [
     description: "Categorize and rank items into distinct tiers. A structured approach to qualitative assessment.",
     href: "/tier-list",
     tag: "Analysis",
+    image: "/screenshots/tier-list.png",
   },
 ];
 
@@ -72,15 +79,27 @@ export default function Home() {
               href={demo.href}
               className="group flex flex-col gap-6"
             >
-              <div className="aspect-[4/3] bg-secondary border border-border p-8 flex items-center justify-center group-hover:bg-accent/10 transition-colors duration-500 relative overflow-hidden">
-                <div className="absolute top-4 left-4 font-mono text-xs text-muted-foreground">
+              <div className="aspect-[4/3] bg-secondary border border-border relative overflow-hidden group-hover:shadow-2xl transition-all duration-500">
+                <Image
+                  src={demo.image}
+                  alt={demo.title}
+                  fill
+                  className="object-cover object-top filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  unoptimized
+                />
+                <div className="absolute inset-0 bg-primary/10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="absolute top-4 left-4 font-mono text-xs text-white bg-black/50 backdrop-blur-md px-2 py-1 border border-white/10">
                   {demo.id}
                 </div>
-                <div className="absolute bottom-4 right-4 font-mono text-xs uppercase tracking-widest text-muted-foreground border border-border px-2 py-1">
+                <div className="absolute bottom-4 right-4 font-mono text-xs uppercase tracking-widest text-white bg-black/50 backdrop-blur-md px-2 py-1 border border-white/10">
                   {demo.tag}
                 </div>
-                <div className="w-16 h-16 bg-background border border-border flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm">
-                  <ArrowRight className="w-6 h-6 text-primary opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-500 border border-primary/20">
+                    <ArrowRight className="w-6 h-6 text-primary" />
+                  </div>
                 </div>
               </div>
               
