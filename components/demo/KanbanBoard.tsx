@@ -96,12 +96,12 @@ function SortableTask({ id, task }: { id: string; task: Task }) {
       {...attributes}
       {...listeners}
       className={cn(
-        "group relative bg-white dark:bg-zinc-800 p-4 rounded-xl border shadow-sm transition-all hover:border-zinc-300 dark:hover:border-zinc-700 cursor-grab active:cursor-grabbing",
+        "group relative bg-card p-4 rounded-xl border border-border shadow-sm transition-all hover:border-primary/20 hover:shadow-md cursor-grab active:cursor-grabbing",
         isDragging && "opacity-50 grayscale"
       )}
     >
       <div className="flex items-start gap-3">
-        <p className="text-sm text-zinc-700 dark:text-zinc-300 flex-grow">
+        <p className="text-sm text-foreground flex-grow leading-relaxed">
           {task.content}
         </p>
       </div>
@@ -121,16 +121,16 @@ function ColumnContainer({ column, tasks }: { column: Column; tasks: Task[] }) {
   return (
     <div
       ref={setNodeRef}
-      className="flex flex-col w-full min-w-[300px] bg-zinc-100/50 dark:bg-zinc-900/50 rounded-2xl p-4 border"
+      className="flex flex-col w-full min-w-[320px] bg-secondary/30 backdrop-blur-sm rounded-2xl p-4 border border-border"
     >
       <div className="flex items-center justify-between mb-4 px-2">
-        <h3 className="font-bold text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground flex items-center gap-2">
           {column.title}
-          <span className="text-xs font-normal text-zinc-400 bg-white dark:bg-zinc-800 px-2 py-0.5 rounded-full border">
+          <span className="text-xs font-medium text-muted-foreground bg-background px-2 py-0.5 rounded-full border border-border">
             {tasks.length}
           </span>
         </h3>
-        <button className="text-zinc-400 hover:text-zinc-600 transition-colors">
+        <button className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded hover:bg-background">
           <MoreHorizontal className="w-4 h-4" />
         </button>
       </div>
@@ -146,7 +146,7 @@ function ColumnContainer({ column, tasks }: { column: Column; tasks: Task[] }) {
         </div>
       </SortableContext>
 
-      <button className="mt-4 flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors px-2">
+      <button className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-background transition-colors p-2 rounded-xl border border-transparent hover:border-border">
         <Plus className="w-4 h-4" />
         Add card
       </button>
@@ -280,12 +280,12 @@ export function KanbanBoard() {
     <div className="w-full space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Project Board</h2>
-          <p className="text-sm text-zinc-500">Drag tasks between columns to update status</p>
+          <h2 className="text-xl font-semibold tracking-tight">Project Board</h2>
+          <p className="text-sm text-muted-foreground">Drag tasks between columns to update status</p>
         </div>
         <button
           onClick={resetBoard}
-          className="flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-secondary"
         >
           <RefreshCcw className="w-4 h-4" />
           Reset Board
@@ -316,10 +316,10 @@ export function KanbanBoard() {
         </div>
 
         <DragOverlay>
-          {activeTaskId ? (
-            <div className="bg-white dark:bg-zinc-800 p-4 rounded-xl border shadow-xl w-[280px] rotate-2 cursor-grabbing">
+          {activeTaskId && board.tasks[activeTaskId] ? (
+            <div className="bg-card p-4 rounded-xl border border-primary/20 shadow-2xl w-[320px] rotate-2 cursor-grabbing ring-1 ring-primary/10">
               <div className="flex items-start gap-3">
-                <p className="text-sm text-zinc-700 dark:text-zinc-300">
+                <p className="text-sm text-foreground leading-relaxed">
                   {board.tasks[activeTaskId].content}
                 </p>
               </div>

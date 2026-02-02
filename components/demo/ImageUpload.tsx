@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Upload, FileImage, Trash2, RefreshCcw } from "lucide-react";
+import { Upload, FileImage, Trash2, RefreshCcw, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -127,12 +127,12 @@ export function ImageUpload() {
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Upload Images</h2>
-          <p className="text-sm text-zinc-500">Drag and drop images up to 2MB each</p>
+          <h2 className="text-xl font-semibold tracking-tight">Upload Images</h2>
+          <p className="text-sm text-muted-foreground">Drag and drop images up to 2MB each</p>
         </div>
         <button
           onClick={resetImages}
-          className="flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-secondary"
         >
           <RefreshCcw className="w-4 h-4" />
           Reset
@@ -140,8 +140,12 @@ export function ImageUpload() {
       </div>
 
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm animate-in fade-in slide-in-from-top-2">
+        <div className="flex items-center gap-3 p-4 bg-destructive/10 border border-destructive/20 text-destructive rounded-xl text-sm animate-in fade-in slide-in-from-top-2">
+          <div className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
           {error}
+          <button onClick={() => setError(null)} className="ml-auto hover:text-destructive/80">
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 
@@ -151,23 +155,23 @@ export function ImageUpload() {
         onDrop={onDrop}
         onClick={handleContainerClick}
         className={cn(
-          "relative border-2 border-dashed rounded-3xl p-12 transition-all flex flex-col items-center justify-center text-center gap-4 cursor-pointer",
+          "relative border-2 border-dashed rounded-3xl p-16 transition-all duration-300 flex flex-col items-center justify-center text-center gap-6 cursor-pointer group glass",
           isDragging
-            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20 scale-[1.01]"
-            : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
+            ? "border-primary bg-primary/5 scale-[1.01] shadow-2xl"
+            : "border-border hover:border-primary/50 hover:bg-secondary/30"
         )}
       >
         <div className={cn(
-          "w-16 h-16 rounded-2xl flex items-center justify-center transition-all",
-          isDragging ? "bg-blue-500 text-white" : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400"
+          "w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-sm",
+          isDragging ? "bg-primary text-primary-foreground scale-110" : "bg-secondary text-muted-foreground group-hover:scale-110 group-hover:bg-background"
         )}>
-          <Upload className="w-8 h-8" />
+          <Upload className="w-10 h-10" />
         </div>
-        <div>
-          <p className="text-lg font-medium">
-            {isDragging ? "Drop images here" : "Click or drag images here to upload"}
+        <div className="space-y-2">
+          <p className="text-xl font-medium text-foreground">
+            {isDragging ? "Drop images now" : "Click or drag images to upload"}
           </p>
-          <p className="text-sm text-zinc-500 mt-1">
+          <p className="text-sm text-muted-foreground">
             Supports JPG, PNG, WebP up to 2MB
           </p>
         </div>
@@ -179,7 +183,6 @@ export function ImageUpload() {
           className="hidden"
           onChange={(e) => {
             if (e.target.files) processFiles(e.target.files);
-            // Reset input value to allow selecting same file again
             e.target.value = "";
           }}
         />
@@ -190,20 +193,20 @@ export function ImageUpload() {
           {images.map((image) => (
             <motion.div
               key={image.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
               layout
-              className="group relative aspect-square rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 border"
+              className="group relative aspect-square rounded-2xl overflow-hidden bg-secondary border border-border shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300"
             >
               <Image
                 src={image.url}
                 alt={image.name}
                 fill
-                className="w-full h-full object-cover transition-transform group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 unoptimized
               />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end p-4 text-center">
                 <p className="text-white text-xs font-medium truncate w-full mb-1">
                   {image.name}
                 </p>
@@ -215,7 +218,7 @@ export function ImageUpload() {
                     e.stopPropagation();
                     removeImage(image.id);
                   }}
-                  className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors"
+                  className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-destructive hover:border-destructive transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -226,9 +229,9 @@ export function ImageUpload() {
       </div>
 
       {images.length === 0 && !error && (
-        <div className="text-center py-12 text-zinc-400 border border-dashed rounded-3xl">
-          <FileImage className="w-8 h-8 mx-auto mb-2 opacity-20" />
-          <p className="text-sm">No images uploaded yet</p>
+        <div className="text-center py-16 rounded-3xl border border-dashed border-border bg-secondary/20">
+          <FileImage className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
+          <p className="text-muted-foreground font-medium">No images uploaded yet</p>
         </div>
       )}
     </div>

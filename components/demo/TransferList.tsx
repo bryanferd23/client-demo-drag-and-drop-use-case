@@ -75,24 +75,24 @@ function SortableItem({ item, container }: { item: Item; container: string }) {
       ref={setNodeRef}
       style={style}
       className={cn(
-        "flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl border shadow-sm transition-all",
-        isDragging ? "opacity-50" : "hover:border-zinc-300 dark:hover:border-zinc-700"
+        "flex items-center justify-between bg-card p-3 rounded-xl border border-border transition-all hover:border-primary/20 hover:shadow-sm",
+        isDragging ? "opacity-50 grayscale" : "cursor-default"
       )}
     >
       <div className="flex items-center gap-3">
         <div 
           {...attributes} 
           {...listeners}
-          className="cursor-grab active:cursor-grabbing text-zinc-400 hover:text-zinc-600 transition-colors"
+          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors p-1"
         >
           <GripVertical className="w-4 h-4" />
         </div>
-        <span className="text-sm font-medium">{item.label}</span>
+        <span className="text-sm font-medium text-foreground">{item.label}</span>
       </div>
       {container === "available" ? (
-        <ArrowRight className="w-3.5 h-3.5 text-zinc-300" />
+        <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
       ) : (
-        <ArrowLeft className="w-3.5 h-3.5 text-zinc-300" />
+        <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground" />
       )}
     </div>
   );
@@ -210,12 +210,12 @@ export function TransferList() {
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Tech Stack Selector</h2>
-          <p className="text-sm text-zinc-500">Drag items to select them for your project</p>
+          <h2 className="text-xl font-semibold tracking-tight">Tech Stack Selector</h2>
+          <p className="text-sm text-muted-foreground">Drag items to select them for your project</p>
         </div>
         <button
           onClick={resetData}
-          className="flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-secondary"
         >
           <RefreshCcw className="w-4 h-4" />
           Reset Lists
@@ -234,18 +234,18 @@ export function TransferList() {
           {/* Available List */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-400">Available</h3>
-              <span className="text-xs bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full border">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Available</h3>
+              <span className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full border border-border">
                 {data.available.length}
               </span>
             </div>
-            <div className="bg-zinc-100/50 dark:bg-zinc-900/50 rounded-2xl p-4 border min-h-[400px]">
+            <div className="bg-secondary/30 backdrop-blur-sm rounded-2xl p-4 border border-border min-h-[400px]">
               <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input 
                   type="text" 
                   placeholder="Search available..."
-                  className="w-full bg-white dark:bg-zinc-800 border rounded-xl py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full bg-background border border-border rounded-xl py-2 pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground/50 transition-all"
                 />
               </div>
               <SortableContext
@@ -258,7 +258,7 @@ export function TransferList() {
                     <SortableItem key={item.id} item={item} container="available" />
                   ))}
                   {data.available.length === 0 && (
-                    <div className="py-12 text-center text-zinc-400 text-sm italic">
+                    <div className="py-12 text-center text-muted-foreground text-sm italic">
                       All items selected
                     </div>
                   )}
@@ -270,12 +270,12 @@ export function TransferList() {
           {/* Selected List */}
           <div className="space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-400">Selected</h3>
-              <span className="text-xs bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 px-2 py-0.5 rounded-full border border-blue-100 dark:border-blue-900/30">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Selected</h3>
+              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20">
                 {data.selected.length}
               </span>
             </div>
-            <div className="bg-zinc-100/50 dark:bg-zinc-900/50 rounded-2xl p-4 border border-blue-100 dark:border-blue-900/20 min-h-[400px]">
+            <div className="bg-secondary/30 backdrop-blur-sm rounded-2xl p-4 border border-border min-h-[400px]">
               <SortableContext
                 id="selected"
                 items={data.selected.map((i) => i.id)}
@@ -286,7 +286,7 @@ export function TransferList() {
                     <SortableItem key={item.id} item={item} container="selected" />
                   ))}
                   {data.selected.length === 0 && (
-                    <div className="py-12 text-center text-zinc-400 text-sm italic">
+                    <div className="py-12 text-center text-muted-foreground text-sm italic">
                       No items selected yet
                     </div>
                   )}
@@ -298,12 +298,12 @@ export function TransferList() {
 
         <DragOverlay>
           {activeId && activeItem ? (
-            <div className="flex items-center justify-between bg-white dark:bg-zinc-800 p-3 rounded-xl border border-blue-500 shadow-2xl scale-105 opacity-90 cursor-grabbing w-[300px]">
+            <div className="flex items-center justify-between bg-card p-3 rounded-xl border border-primary/30 shadow-2xl scale-105 cursor-grabbing w-[300px] ring-1 ring-primary/10">
               <div className="flex items-center gap-3">
-                <GripVertical className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium">{activeItem.label}</span>
+                <GripVertical className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-foreground">{activeItem.label}</span>
               </div>
-              <ArrowRight className="w-3.5 h-3.5 text-blue-500" />
+              <ArrowRight className="w-3.5 h-3.5 text-primary" />
             </div>
           ) : null}
         </DragOverlay>

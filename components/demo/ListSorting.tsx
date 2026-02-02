@@ -61,30 +61,35 @@ function SortableItem({ item }: { item: ListItem }) {
       ref={setNodeRef}
       style={style}
       className={cn(
-        "flex items-center gap-4 bg-white dark:bg-zinc-900 p-4 rounded-2xl border transition-all",
-        isDragging ? "opacity-50 border-blue-500 shadow-xl z-50" : "hover:border-zinc-300 dark:hover:border-zinc-700"
+        "flex items-center gap-4 bg-card p-4 rounded-2xl border border-border transition-all hover:border-primary/20",
+        isDragging ? "opacity-50 grayscale" : "hover:shadow-md"
       )}
     >
       <div 
         {...attributes} 
         {...listeners}
-        className="cursor-grab active:cursor-grabbing text-zinc-400 hover:text-zinc-600 transition-colors"
+        className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors p-1"
       >
         <GripVertical className="w-5 h-5" />
       </div>
       
       <div className={cn(
-        "w-6 h-6 rounded-full flex items-center justify-center border-2",
-        item.completed ? "border-emerald-500 bg-emerald-500 text-white" : "border-zinc-200 dark:border-zinc-800"
+        "w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors",
+        item.completed 
+          ? "border-primary bg-primary text-primary-foreground" 
+          : "border-muted-foreground/30 text-transparent"
       )}>
-        {item.completed ? <CheckCircle2 className="w-4 h-4" /> : <Circle className="w-4 h-4 text-zinc-200 dark:text-zinc-800" />}
+        <CheckCircle2 className="w-4 h-4" />
       </div>
 
       <div className="flex-grow">
-        <h3 className={cn("font-semibold text-sm", item.completed && "text-zinc-400 line-through")}>
+        <h3 className={cn(
+          "font-semibold text-sm transition-colors", 
+          item.completed ? "text-muted-foreground line-through decoration-muted-foreground/50" : "text-foreground"
+        )}>
           {item.title}
         </h3>
-        <p className="text-xs text-zinc-500 mt-0.5">
+        <p className="text-xs text-muted-foreground mt-0.5">
           {item.description}
         </p>
       </div>
@@ -153,12 +158,12 @@ export function ListSorting() {
     <div className="w-full max-w-2xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Today&apos;s Tasks</h2>
-          <p className="text-sm text-zinc-500">Reorder tasks based on priority</p>
+          <h2 className="text-xl font-semibold tracking-tight">Today&apos;s Tasks</h2>
+          <p className="text-sm text-muted-foreground">Reorder tasks based on priority</p>
         </div>
         <button
           onClick={resetItems}
-          className="flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-secondary"
         >
           <RefreshCcw className="w-4 h-4" />
           Reset List
@@ -185,19 +190,19 @@ export function ListSorting() {
 
         <DragOverlay>
           {activeId && activeItem ? (
-            <div className="flex items-center gap-4 bg-white dark:bg-zinc-900 p-4 rounded-2xl border border-blue-500 shadow-2xl scale-105 opacity-90 cursor-grabbing">
-              <GripVertical className="w-5 h-5 text-blue-500" />
+            <div className="flex items-center gap-4 bg-card p-4 rounded-2xl border border-primary/30 shadow-2xl scale-105 cursor-grabbing ring-1 ring-primary/10">
+              <GripVertical className="w-5 h-5 text-primary" />
               <div className={cn(
                 "w-6 h-6 rounded-full flex items-center justify-center border-2",
-                activeItem.completed ? "border-emerald-500 bg-emerald-500 text-white" : "border-zinc-200 dark:border-zinc-800"
+                activeItem.completed ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/30"
               )}>
-                {activeItem.completed ? <CheckCircle2 className="w-4 h-4" /> : <Circle className="w-4 h-4 text-zinc-200 dark:text-zinc-800" />}
+                <CheckCircle2 className="w-4 h-4" />
               </div>
               <div className="flex-grow">
-                <h3 className="font-semibold text-sm">
+                <h3 className="font-semibold text-sm text-foreground">
                   {activeItem.title}
                 </h3>
-                <p className="text-xs text-zinc-500 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {activeItem.description}
                 </p>
               </div>

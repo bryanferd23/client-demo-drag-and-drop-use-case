@@ -63,8 +63,8 @@ function SortablePhoto({ item }: { item: GalleryItem }) {
       ref={setNodeRef}
       style={style}
       className={cn(
-        "relative aspect-square rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 border group",
-        isDragging ? "opacity-0" : "cursor-grab active:cursor-grabbing"
+        "relative aspect-square rounded-2xl overflow-hidden bg-secondary border border-border group transition-all duration-300",
+        isDragging ? "opacity-50 grayscale scale-95" : "hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] cursor-grab active:cursor-grabbing"
       )}
       {...attributes}
       {...listeners}
@@ -73,14 +73,14 @@ function SortablePhoto({ item }: { item: GalleryItem }) {
         src={item.url}
         alt={item.title}
         fill
-        className="w-full h-full object-cover transition-transform group-hover:scale-105"
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         unoptimized
       />
-      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-        <p className="text-white text-xs font-medium">{item.title}</p>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+        <p className="text-white text-xs font-medium translate-y-2 group-hover:translate-y-0 transition-transform duration-300">{item.title}</p>
       </div>
-      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="p-1.5 rounded-lg bg-white/20 backdrop-blur-md text-white">
+      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-[-10px] group-hover:translate-y-0">
+        <div className="p-1.5 rounded-lg bg-black/20 backdrop-blur-md text-white hover:bg-black/40 transition-colors">
           <Maximize2 className="w-3.5 h-3.5" />
         </div>
       </div>
@@ -149,12 +149,12 @@ export function GallerySort() {
     <div className="w-full space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Gallery Arrangement</h2>
-          <p className="text-sm text-zinc-500">Drag images to reorder your collection</p>
+          <h2 className="text-xl font-semibold tracking-tight">Gallery Arrangement</h2>
+          <p className="text-sm text-muted-foreground">Drag images to reorder your collection</p>
         </div>
         <button
           onClick={resetItems}
-          className="flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors"
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-secondary"
         >
           <RefreshCcw className="w-4 h-4" />
           Reset Gallery
@@ -181,7 +181,7 @@ export function GallerySort() {
 
         <DragOverlay adjustScale={true}>
           {activeId && activeItem ? (
-            <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-blue-500 shadow-2xl scale-105 opacity-90 cursor-grabbing z-50">
+            <div className="relative aspect-square rounded-2xl overflow-hidden border-2 border-primary shadow-2xl scale-105 cursor-grabbing z-50 ring-4 ring-primary/10">
               <Image
                 src={activeItem.url}
                 alt={activeItem.title}
@@ -189,7 +189,7 @@ export function GallerySort() {
                 className="w-full h-full object-cover"
                 unoptimized
               />
-              <div className="absolute inset-0 bg-black/20 flex items-end p-4">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
                 <p className="text-white text-xs font-medium">{activeItem.title}</p>
               </div>
             </div>
