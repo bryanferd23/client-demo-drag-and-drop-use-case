@@ -208,9 +208,9 @@ export function ImageUpload() {
                 />
               </div>
               
-              <div className="absolute inset-x-0 bottom-0 p-4 bg-background border-t border-border translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-between">
-                <div className="overflow-hidden">
-                  <p className="font-mono text-xs truncate max-w-[100px] text-foreground">
+              <div className="absolute inset-0 p-4 bg-background/90 backdrop-blur-sm border-t border-border opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center gap-2">
+                <div className="overflow-hidden w-full">
+                  <p className="font-mono text-xs truncate text-foreground font-bold">
                     {image.name}
                   </p>
                   <p className="font-mono text-[10px] text-muted-foreground">
@@ -222,9 +222,10 @@ export function ImageUpload() {
                     e.stopPropagation();
                     removeImage(image.id);
                   }}
-                  className="text-destructive hover:bg-destructive hover:text-white p-2 transition-colors"
+                  className="text-destructive hover:bg-destructive hover:text-white p-2 border border-destructive/20 transition-colors w-full flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-bold"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3 h-3" />
+                  Remove
                 </button>
               </div>
             </motion.div>
@@ -235,9 +236,9 @@ export function ImageUpload() {
       {images.length === 0 && !error && (
         <div className="flex items-center justify-center py-24 border border-border bg-secondary/10">
           <div className="text-center space-y-4">
-            <div className="w-12 h-1px bg-border mx-auto" />
+            <div className="w-12 h-[1px] bg-border mx-auto" />
             <p className="font-serif italic text-muted-foreground">No artifacts selected.</p>
-            <div className="w-12 h-1px bg-border mx-auto" />
+            <div className="w-12 h-[1px] bg-border mx-auto" />
           </div>
         </div>
       )}

@@ -35,9 +35,9 @@
 }
 
 :root {
-  --radius: 0rem; /* Sharp, editorial look */
+  --radius: 0rem;
   
-  /* Luxury Editorial - Light Mode */
+  /* Luxury Editorial - Light Mode (Default) */
   --background: 40 20% 97%; /* #F7F5F0 Warm Paper */
   --foreground: 0 0% 10%;   /* #1A1A1A Ink Black */
   
@@ -48,7 +48,7 @@
   --secondary-foreground: 0 0% 10%;
   
   --muted: 40 10% 88%;      /* #E3E0D9 Muted Paper */
-  --muted-foreground: 0 0% 40%;
+  --muted-foreground: 0 0% 30%; /* Darkened for better readability */
   
   --accent: 15 30% 45%;     /* #95503C Terracotta */
   --accent-foreground: 40 20% 97%;
@@ -81,7 +81,7 @@
   --destructive: 0 50% 50%;
   --destructive-foreground: 40 20% 94%;
   
-  --border: 0 0% 30%;       /* Soft Gray Border */
+  --border: 0 0% 30%;
   --input: 0 0% 30%;
   --ring: 140 20% 40%;
 }
@@ -91,11 +91,14 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased font-sans;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif text-foreground;
+  }
+  p, span, div {
+    @apply text-foreground;
   }
 }
 
