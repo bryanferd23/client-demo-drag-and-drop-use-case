@@ -208,12 +208,12 @@ export function ImageUpload() {
                 />
               </div>
               
-              <div className="absolute inset-0 p-4 bg-background/90 backdrop-blur-sm border-t border-border opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center gap-2">
+              <div className="absolute inset-0 p-4 bg-primary/90 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-center gap-3">
                 <div className="overflow-hidden w-full">
-                  <p className="font-mono text-xs truncate text-foreground font-bold">
+                  <p className="font-mono text-xs truncate text-white font-bold tracking-tight">
                     {image.name}
                   </p>
-                  <p className="font-mono text-[10px] text-muted-foreground">
+                  <p className="font-mono text-[10px] text-white/70">
                     {formatSize(image.size)}
                   </p>
                 </div>
@@ -222,7 +222,7 @@ export function ImageUpload() {
                     e.stopPropagation();
                     removeImage(image.id);
                   }}
-                  className="text-destructive hover:bg-destructive hover:text-white p-2 border border-destructive/20 transition-colors w-full flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-bold"
+                  className="bg-destructive text-white hover:bg-white hover:text-destructive px-4 py-2 transition-all duration-300 w-full flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest font-bold border border-transparent hover:border-destructive"
                 >
                   <Trash2 className="w-3 h-3" />
                   Remove
