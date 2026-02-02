@@ -188,12 +188,19 @@ export function TransferList() {
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
+    const overId = over?.id;
+
+    if (!overId) {
+      setActiveId(null);
+      return;
+    }
+
     const activeContainer = findContainer(active.id as string);
-    const overContainer = over?.id in data ? over?.id as keyof TransferData : findContainer(over?.id as string);
+    const overContainer = overId in data ? overId as keyof TransferData : findContainer(overId as string);
 
     if (activeContainer && overContainer && activeContainer === overContainer) {
       const activeIndex = data[activeContainer].findIndex((i) => i.id === active.id);
-      const overIndex = data[overContainer].findIndex((i) => i.id === over?.id);
+      const overIndex = data[overContainer].findIndex((i) => i.id === overId);
 
       if (activeIndex !== overIndex && overIndex >= 0) {
         setData((prev) => {
