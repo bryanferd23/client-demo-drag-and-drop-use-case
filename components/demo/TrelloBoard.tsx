@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -160,19 +160,9 @@ function ColumnContainer({ column, tasks }: { column: Column; tasks: Task[] }) {
 }
 
 export function TrelloBoard() {
-  const [board, setBoard] = useState<BoardData | null>(() => {
-    if (typeof window === "undefined") return SEED_DATA;
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return SEED_DATA;
-      }
-    }
-    return SEED_DATA;
-  });
+  const [board, setBoard] = useState<BoardData>(SEED_DATA);
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
+  const isLoaded = useRef(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -186,12 +176,23 @@ export function TrelloBoard() {
   );
 
   useEffect(() => {
-    if (board) {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setBoard(JSON.parse(saved));
+      } catch {
+        // ignore
+      }
+    }
+    isLoaded.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded.current) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(board));
     }
   }, [board]);
-
-  if (!board) return null;
 
   function findColumnOfTask(taskId: string) {
     if (!board) return null;

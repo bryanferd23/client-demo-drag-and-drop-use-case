@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   DndContext,
   closestCenter,
@@ -93,19 +93,9 @@ function SortableItem({ item }: { item: ListItem }) {
 }
 
 export function ListSorting() {
-  const [items, setItems] = useState<ListItem[]>(() => {
-    if (typeof window === "undefined") return SEED_DATA;
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return SEED_DATA;
-      }
-    }
-    return SEED_DATA;
-  });
+  const [items, setItems] = useState<ListItem[]>(SEED_DATA);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const isLoaded = useRef(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -115,7 +105,20 @@ export function ListSorting() {
   );
 
   useEffect(() => {
-    if (items.length > 0) {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setItems(JSON.parse(saved));
+      } catch {
+        // ignore
+      }
+    }
+    isLoaded.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded.current && items.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     }
   }, [items]);

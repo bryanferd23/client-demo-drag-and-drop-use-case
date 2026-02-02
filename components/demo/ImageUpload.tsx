@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Upload, FileImage, Trash2, RefreshCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -18,25 +18,29 @@ const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const STORAGE_KEY = "dnd-demo-images";
 
 export function ImageUpload() {
-  const [images, setImages] = useState<UploadedFile[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [images, setImages] = useState<UploadedFile[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const isLoaded = useRef(false);
+
+  useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setImages(JSON.parse(saved));
       } catch (e) {
         console.error("Failed to parse saved images", e);
-        return [];
       }
     }
-    return [];
-  });
-  const [isDragging, setIsDragging] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+    isLoaded.current = true;
+  }, []);
 
   // Save to localStorage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
+    if (isLoaded.current) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
+    }
   }, [images]);
 
   const onDragOver = useCallback((e: React.DragEvent) => {

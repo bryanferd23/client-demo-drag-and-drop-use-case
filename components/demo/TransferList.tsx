@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -99,19 +99,9 @@ function SortableItem({ item, container }: { item: Item; container: string }) {
 }
 
 export function TransferList() {
-  const [data, setData] = useState<TransferData | null>(() => {
-    if (typeof window === "undefined") return SEED_DATA;
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return SEED_DATA;
-      }
-    }
-    return SEED_DATA;
-  });
+  const [data, setData] = useState<TransferData>(SEED_DATA);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const isLoaded = useRef(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -121,12 +111,23 @@ export function TransferList() {
   );
 
   useEffect(() => {
-    if (data) {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setData(JSON.parse(saved));
+      } catch {
+        // ignore
+      }
+    }
+    isLoaded.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded.current) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
   }, [data]);
-
-  if (!data) return null;
 
   function findContainer(id: string) {
     if (id in data) return id as keyof TransferData;
