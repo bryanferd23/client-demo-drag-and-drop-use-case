@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import {
   DndContext,
   DragOverlay,
-  closestCorners,
+  rectIntersection,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -366,7 +366,7 @@ export function TierList() {
       <DndContext
         id={id}
         sensors={sensors}
-        collisionDetection={closestCorners}
+        collisionDetection={rectIntersection}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
@@ -387,7 +387,7 @@ export function TierList() {
         />
 
         <DragOverlay>
-          {activeId ? (
+          {activeId && data.items[activeId] ? (
             <div className="relative w-20 h-20 overflow-hidden border-2 border-blue-500 shadow-2xl scale-105 cursor-grabbing z-50">
               <Image
                 src={data.items[activeId].url}
