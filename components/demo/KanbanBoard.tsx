@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -71,7 +71,7 @@ const SEED_DATA: BoardData = {
   columnOrder: ["todo", "doing", "done"],
 };
 
-const STORAGE_KEY = "dnd-demo-trello";
+const STORAGE_KEY = "dnd-demo-kanban";
 
 // Components
 function SortableTask({ id, task }: { id: string; task: Task }) {
@@ -159,10 +159,11 @@ function ColumnContainer({ column, tasks }: { column: Column; tasks: Task[] }) {
   );
 }
 
-export function TrelloBoard() {
+export function KanbanBoard() {
   const [board, setBoard] = useState<BoardData>(SEED_DATA);
   const [activeTaskId, setActiveTaskId] = useState<string | null>(null);
-  const isLoaded = useRef(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const id = React.useId();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -185,14 +186,14 @@ export function TrelloBoard() {
         // ignore
       }
     }
-    isLoaded.current = true;
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (isLoaded.current) {
+    if (isLoaded) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(board));
     }
-  }, [board]);
+  }, [board, isLoaded]);
 
   function findColumnOfTask(taskId: string) {
     if (!board) return null;
@@ -297,6 +298,7 @@ export function TrelloBoard() {
       </div>
 
       <DndContext
+        id={id}
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}

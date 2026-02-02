@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Upload, FileImage, Trash2, RefreshCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,7 @@ export function ImageUpload() {
   const [images, setImages] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isLoaded = useRef(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -33,15 +33,15 @@ export function ImageUpload() {
         console.error("Failed to parse saved images", e);
       }
     }
-    isLoaded.current = true;
+    setIsLoaded(true);
   }, []);
 
   // Save to localStorage
   useEffect(() => {
-    if (isLoaded.current) {
+    if (isLoaded) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
     }
-  }, [images]);
+  }, [images, isLoaded]);
 
   const onDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();

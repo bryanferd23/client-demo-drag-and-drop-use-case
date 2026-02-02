@@ -15,7 +15,7 @@ import {
 const navItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Image Upload", href: "/image-upload", icon: ImageIcon },
-  { name: "Trello Board", href: "/trello-board", icon: Layout },
+  { name: "Kanban Board", href: "/kanban-board", icon: Layout },
   { name: "List Sorting", href: "/list-sorting", icon: ListOrdered },
   { name: "Gallery", href: "/gallery", icon: LayoutGrid },
   { name: "Transfer List", href: "/transfer-list", icon: ArrowLeftRight },

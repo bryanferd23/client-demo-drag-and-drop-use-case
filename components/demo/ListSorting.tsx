@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DndContext,
   closestCenter,
@@ -95,7 +95,8 @@ function SortableItem({ item }: { item: ListItem }) {
 export function ListSorting() {
   const [items, setItems] = useState<ListItem[]>(SEED_DATA);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const isLoaded = useRef(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const id = React.useId();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -114,14 +115,14 @@ export function ListSorting() {
         // ignore
       }
     }
-    isLoaded.current = true;
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (isLoaded.current && items.length > 0) {
+    if (isLoaded && items.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     }
-  }, [items]);
+  }, [items, isLoaded]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -165,6 +166,7 @@ export function ListSorting() {
       </div>
 
       <DndContext
+        id={id}
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}

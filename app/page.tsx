@@ -17,9 +17,9 @@ const demos = [
     color: "bg-blue-500",
   },
   {
-    title: "Trello Board",
+    title: "Kanban Board",
     description: "Manage tasks across multiple columns. Drag cards between 'To Do', 'Doing', and 'Done'.",
-    href: "/trello-board",
+    href: "/kanban-board",
     icon: Layout,
     color: "bg-purple-500",
   },
@@ -54,8 +54,7 @@ export default function Home() {
           Drag & Drop <span className="text-blue-600">Experiences</span>
         </h1>
         <p className="text-xl text-zinc-600 dark:text-zinc-400">
-          A showcase of various interactive drag-and-drop patterns built with Next.js, 
-          Tailwind CSS, and @dnd-kit. Explore different use cases from simple sorting to 
+          A showcase of various interactive drag-and-drop patterns. Explore different use cases from simple sorting to 
           complex board layouts.
         </p>
       </div>

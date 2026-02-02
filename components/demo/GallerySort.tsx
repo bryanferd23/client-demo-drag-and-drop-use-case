@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DndContext,
   closestCenter,
@@ -38,7 +38,7 @@ const SEED_DATA: GalleryItem[] = [
   { id: "5", url: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80", title: "Path" },
   { id: "6", url: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", title: "Nature" },
   { id: "7", url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", title: "Canyon" },
-  { id: "8", url: "https://images.unsplash.com/photo-1532274402911-5a3b027c1bb7?auto=format&fit=crop&w=800&q=80", title: "Valley" },
+  { id: "8", url: "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800&q=80", title: "Valley" },
 ];
 
 const STORAGE_KEY = "dnd-demo-gallery";
@@ -91,7 +91,8 @@ function SortablePhoto({ item }: { item: GalleryItem }) {
 export function GallerySort() {
   const [items, setItems] = useState<GalleryItem[]>(SEED_DATA);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const isLoaded = useRef(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const id = React.useId();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -110,14 +111,14 @@ export function GallerySort() {
         // ignore
       }
     }
-    isLoaded.current = true;
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (isLoaded.current && items.length > 0) {
+    if (isLoaded && items.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     }
-  }, [items]);
+  }, [items, isLoaded]);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -161,6 +162,7 @@ export function GallerySort() {
       </div>
 
       <DndContext
+        id={id}
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}

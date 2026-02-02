@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -101,7 +101,8 @@ function SortableItem({ item, container }: { item: Item; container: string }) {
 export function TransferList() {
   const [data, setData] = useState<TransferData>(SEED_DATA);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const isLoaded = useRef(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const id = React.useId();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -120,14 +121,14 @@ export function TransferList() {
         // ignore
       }
     }
-    isLoaded.current = true;
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (isLoaded.current) {
+    if (isLoaded) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
-  }, [data]);
+  }, [data, isLoaded]);
 
   function findContainer(id: string) {
     if (id in data) return id as keyof TransferData;
@@ -222,6 +223,7 @@ export function TransferList() {
       </div>
 
       <DndContext
+        id={id}
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
