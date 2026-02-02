@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Upload, FileImage, Trash2, RefreshCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ export function ImageUpload() {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -100,6 +101,10 @@ export function ImageUpload() {
     }
   }, [processFiles]);
 
+  const handleContainerClick = () => {
+    inputRef.current?.click();
+  };
+
   const removeImage = (id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
   };
@@ -144,8 +149,9 @@ export function ImageUpload() {
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
+        onClick={handleContainerClick}
         className={cn(
-          "relative border-2 border-dashed rounded-3xl p-12 transition-all flex flex-col items-center justify-center text-center gap-4",
+          "relative border-2 border-dashed rounded-3xl p-12 transition-all flex flex-col items-center justify-center text-center gap-4 cursor-pointer",
           isDragging
             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20 scale-[1.01]"
             : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -166,12 +172,15 @@ export function ImageUpload() {
           </p>
         </div>
         <input
+          ref={inputRef}
           type="file"
           multiple
           accept="image/*"
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          className="hidden"
           onChange={(e) => {
             if (e.target.files) processFiles(e.target.files);
+            // Reset input value to allow selecting same file again
+            e.target.value = "";
           }}
         />
       </div>
@@ -202,7 +211,10 @@ export function ImageUpload() {
                   {formatSize(image.size)}
                 </p>
                 <button
-                  onClick={() => removeImage(image.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeImage(image.id);
+                  }}
                   className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
