@@ -38,10 +38,10 @@ const SEED_DATA: GalleryItem[] = [
   { id: "5", url: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80", title: "Path" },
   { id: "6", url: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", title: "Nature" },
   { id: "7", url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", title: "Canyon" },
-  { id: "8", url: "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800&q=80", title: "Valley" },
+  { id: "8", url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80", title: "Woods" },
 ];
 
-const STORAGE_KEY = "dnd-demo-gallery";
+const STORAGE_KEY = "dnd-demo-gallery-v2";
 
 function SortablePhoto({ item }: { item: GalleryItem }) {
   const {
