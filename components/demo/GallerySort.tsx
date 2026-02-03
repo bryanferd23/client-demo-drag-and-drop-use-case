@@ -64,7 +64,8 @@ function SortablePhoto({ item }: { item: GalleryItem }) {
       style={style}
       className={cn(
         "relative aspect-square rounded-2xl overflow-hidden bg-secondary border border-border group transition-all duration-300",
-        isDragging ? "opacity-50 grayscale scale-95" : "hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] cursor-grab active:cursor-grabbing"
+        isDragging ? "opacity-50 grayscale scale-95" : "hover:shadow-xl hover:border-primary/30 hover:scale-[1.02] cursor-grab active:cursor-grabbing",
+        "touch-none select-none"
       )}
       {...attributes}
       {...listeners}

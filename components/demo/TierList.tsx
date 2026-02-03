@@ -97,7 +97,7 @@ function SortableTierItem({ id, item }: { id: string; item: TierItem }) {
       {...attributes}
       {...listeners}
       className={cn(
-        "relative w-20 h-20 overflow-hidden border border-black/20 bg-white cursor-grab active:cursor-grabbing hover:z-10 transition-transform",
+        "relative w-20 h-20 overflow-hidden border border-black/20 bg-white cursor-grab active:cursor-grabbing hover:z-10 transition-transform touch-none select-none",
         isDragging && "opacity-50 grayscale"
       )}
     >

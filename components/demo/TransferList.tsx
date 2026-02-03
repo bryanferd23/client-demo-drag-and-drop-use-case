@@ -84,7 +84,7 @@ function SortableItem({ item, container }: { item: Item; container: string }) {
         <div 
           {...attributes} 
           {...listeners}
-          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors p-1"
+          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors p-1 touch-none select-none"
         >
           <GripVertical className="w-4 h-4" />
         </div>

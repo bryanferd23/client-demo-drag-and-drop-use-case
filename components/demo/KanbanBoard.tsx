@@ -96,7 +96,7 @@ function SortableTask({ id, task }: { id: string; task: Task }) {
       {...attributes}
       {...listeners}
       className={cn(
-        "group relative bg-card p-4 rounded-xl border border-border shadow-sm transition-all hover:border-primary/20 hover:shadow-md cursor-grab active:cursor-grabbing",
+        "group relative bg-card p-4 rounded-xl border border-border shadow-sm transition-all hover:border-primary/20 hover:shadow-md cursor-grab active:cursor-grabbing touch-none select-none",
         isDragging && "opacity-50 grayscale"
       )}
     >
