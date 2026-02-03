@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { name: "Overview", href: "/" },
@@ -16,6 +18,11 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80">
@@ -46,8 +53,38 @@ export function Navbar() {
               </Link>
             ))}
           </div>
+
+          <button
+            type="button"
+            className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-border text-foreground hover:bg-secondary transition-colors"
+            aria-label="Toggle navigation"
+            aria-expanded={isOpen}
+            onClick={() => setIsOpen((open) => !open)}
+          >
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
+
+      {isOpen && (
+        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm">
+          <div className="container mx-auto px-6 py-4 flex flex-col gap-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "text-sm font-semibold tracking-wide uppercase transition-colors",
+                  pathname === item.href ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
